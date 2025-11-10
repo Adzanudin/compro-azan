@@ -8,6 +8,7 @@
 </head>
 <body>
     <h3>Matematika Sederhana</h3>
+    <p>Ini teks push dari remote pc di rumah azan</p>
     <p>Pilih menu aritmatika di bawah ini</p>
     <a href="aritmatika/tambah">Tambah</a>
     <a href="{{url('aritmatika/kurang')}}">Kurang</a>
