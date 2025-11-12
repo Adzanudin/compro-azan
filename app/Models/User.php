@@ -28,6 +28,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    //Menyembunyikan data
     protected $hidden = [
         'password',
         'remember_token',
@@ -38,6 +40,8 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
+
+    // Merubah tipe data value
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];

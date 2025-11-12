@@ -13,9 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [App\Http\Controllers\LoginController::class, 'index']);
+Route::get('login', [App\Http\Controllers\LoginController::class, 'index'])->name('login');
+Route::post('action-login', [App\Http\Controllers\LoginController::class, 'actionLogin'])->name('action-login');
+Route::get('sign-out', [App\Http\Controllers\LoginController::class, 'logout'])->name('sign-out');
+
+Route::prefix('admin')->group(function () {
+    Route::resource('dashboard', \App\Http\Controllers\ADMIN\DashboardController::class);
 });
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // GEt sebuah routes : melihat, membaca
 
