@@ -20,6 +20,8 @@ Route::get('sign-out', [App\Http\Controllers\LoginController::class, 'logout'])-
 
 Route::prefix('admin')->group(function () {
     Route::resource('dashboard', \App\Http\Controllers\ADMIN\DashboardController::class);
+    Route::resource('user', \App\Http\Controllers\ADMIN\UserController::class);
+    Route::resource('blog', \App\Http\Controllers\ADMIN\BlogController::class);
 });
 
 // Route::get('/', function () {
