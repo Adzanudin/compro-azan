@@ -9,7 +9,7 @@ class Blog extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['category_id', 'title', 'slug', 'content'];
+    protected $fillable = ['category_id', 'title', 'slug', 'content', 'photo', 'status', 'writter'];
 
     //object relasion mapping
     //belongsto

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\Categories;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -45,12 +46,19 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         // User::create($request->all());
-        BLog::create([
+        $data = [
             'category_id' =>  $request->category_id,
             'title' =>  $request->title,
             'slug' =>  Str::slug($request->title),
             'content' =>  $request->content,
-        ]);
+            'status' => $request->status,
+            'writter' => auth()->user()->name,
+        ];
+        if ($request->hasFile('photo')){
+            $photo = $request->file('photo')->store('blog', 'public');
+            $data['photo'] = $photo;
+        }
+        BLog::create($data);
         Alert::success('Success Title', 'Success Message');
 
         return redirect()->to('admin/blog');
@@ -91,12 +99,25 @@ class BlogController extends Controller
     public function update(Request $request, $id)
     {
         $update = Blog::find($id);
-        $update->category_id       = $request->category_id;
-        $update->title       = $request->title;
-        $update->content       = $request->content;
-        $update->slug      = Str::slug($request->titlr);
+        $data = [
+            'category_id' =>  $request->category_id,
+            'title' =>  $request->title,
+            'slug' =>  Str::slug($request->title),
+            'content' =>  $request->content,
+            'status' => $request->status,
+            'writter' => auth()->user()->name,
+        ];
 
-        $update->save();
+        if ($request->hasFile('photo')){
+            if($update->photo){
+                File::delete(public_path('storage/'. $update->photo));
+            }
+            $photo = $request->file('photo')->store('blog', 'public');
+            $data['photo'] = $photo;
+        };
+
+        $update->update($data);
+        Alert::success('Success Title', 'Success Message');
         return redirect()->to('admin/blog');
     }
 
@@ -108,9 +129,10 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        Blog::find($id)->delete();
-        Alert::success('Success Title', 'Success Message');
-
+        $delete = Blog::find($id);
+        $delete->delete();
+        File::delete(public_path('storage/'. $delete->photo));
+        Alert::success('Success Title', 'Delete Success');
         return redirect()->to('admin/blog');
     }
 }
